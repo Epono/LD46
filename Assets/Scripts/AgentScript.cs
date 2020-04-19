@@ -51,6 +51,10 @@ public class AgentScript : MonoBehaviour
                 Destroy(this.gameObject);
 
                 ManagerManagerScript.Instance.goalScript.currentHealth += ManagerManagerScript.Instance.moneyPerKill.Value;
+                if(ManagerManagerScript.Instance.goalScript.currentHealth > ManagerManagerScript.Instance.goalScript.maxHealth.Value)
+                {
+                    ManagerManagerScript.Instance.goalScript.currentHealth = ManagerManagerScript.Instance.goalScript.maxHealth.Value;
+                }
             }
         }
     }

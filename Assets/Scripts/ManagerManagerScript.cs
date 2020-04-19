@@ -61,7 +61,7 @@ public class ManagerManagerScript : MonoBehaviour
         towerGhostScript = towerGhost.GetComponent<TowerGhostScript>();
 
         goalScript = goal.GetComponent<GoalScript>();
-        slider.maxValue = goalScript.currentHealth;
+        slider.maxValue = goalScript.maxHealth.Value;
 
         towersParent = GameObject.Find("Towers");
     }

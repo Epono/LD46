@@ -23,9 +23,6 @@ public class TowerScript : MonoBehaviour
     [SerializeField]
     GameObject bulletPrefab;
 
-    [SerializeField]
-    ParticleSystem particles;
-
     GameObject bulletsParent;
 
     public float timeSinceCreated;
@@ -78,11 +75,11 @@ public class TowerScript : MonoBehaviour
         GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
         bullet.transform.SetParent(bulletsParent.transform);
 
-        float duration = 0.5f;
+        float duration = 0.3f;
         Vector3 target = agentScript.transform.position;
         target.x += agentScript.navMeshAgent.velocity.x * duration;
         target.z += agentScript.navMeshAgent.velocity.z * duration;
-        bullet.transform.DOMove(target, duration).OnComplete(() => OnCompleteCallback(agentScript, bullet));
+        bullet.transform.DOMove(target, duration).OnComplete(() => OnCompleteCallback(agentScript, bullet)).SetEase(Ease.Linear);
 
         timeBeforeNextShot = timeBetweenShots.Value;
     }

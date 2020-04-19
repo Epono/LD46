@@ -47,7 +47,7 @@ MonoBehaviour:
   spawns: []
   intermediaryGoals: []
   towerScripts: []
-  goal: {fileID: 4566029948890527231, guid: d7bdc0b945d83984f9f09a62f5daec45, type: 3}
+  goal: {fileID: 0}
   goalScript: {fileID: 0}
   towerGhostPrefab: {fileID: 4185592215582407703, guid: 0a5fc3fa582f1e14ab0e07f96c9702f3,
     type: 3}

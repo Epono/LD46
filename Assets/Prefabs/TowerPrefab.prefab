@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 7059095510805096263}
   - component: {fileID: -4990537126267750196}
   - component: {fileID: -5866022602497204106}
-  - component: {fileID: -5907920221760096363}
   - component: {fileID: 5616887024705310396}
+  - component: {fileID: -5907920221760096363}
   m_Layer: 8
   m_Name: TowerPrefab
   m_TagString: Untagged
@@ -112,27 +112,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 4
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-5907920221760096363
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4185592215582407703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fd7bf9320631ac44b9da8cecfbce033, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  agentScripts: []
-  timeBetweenShots: {fileID: 11400000, guid: b4157c300d899484085b096cfdfddea6, type: 2}
-  damage: {fileID: 11400000, guid: 388319301c1537048a069c2924b9ea9a, type: 2}
-  towerLifeSpan: {fileID: 11400000, guid: b18d64b948818684ca8af4d3f3654cb9, type: 2}
-  bulletPrefab: {fileID: 3166586110292682059, guid: 889e5d216d293d346902c088a6e13485,
-    type: 3}
-  particles: {fileID: 4561718181658277419, guid: bc3e4d55a68d6cc439585fda365e7b55,
-    type: 3}
-  timeSinceCreated: 0
 --- !u!114 &5616887024705310396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -348,3 +327,24 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
+--- !u!114 &-5907920221760096363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4185592215582407703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fd7bf9320631ac44b9da8cecfbce033, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agentScripts: []
+  timeBetweenShots: {fileID: 11400000, guid: b4157c300d899484085b096cfdfddea6, type: 2}
+  damage: {fileID: 11400000, guid: 388319301c1537048a069c2924b9ea9a, type: 2}
+  towerLifeSpan: {fileID: 11400000, guid: b18d64b948818684ca8af4d3f3654cb9, type: 2}
+  bulletPrefab: {fileID: 3166586110292682059, guid: 889e5d216d293d346902c088a6e13485,
+    type: 3}
+  particles: {fileID: 333481246355030250, guid: a7ea5997011d11e448d4943923df82ee,
+    type: 3}
+  timeSinceCreated: 0

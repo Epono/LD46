@@ -42,7 +42,7 @@ public class GoalScript : MonoBehaviour
         ratio = (currentHealth / maxHealth.Value) * maxScale;
         mesh.transform.localScale = new Vector3(2 + ratio / 4, ratio * 1.5f, 2 + ratio / 4);
         collider.transform.localScale = new Vector3(1.5f /*+ Math.Max(1, ratio / 2)*/ + 1, 1, 1);
-        particles.transform.localScale = new Vector3(ratio / 2, ratio, ratio / 2);
+        particles.transform.localScale = new Vector3(ratio / 1.5f, ratio, ratio / 1.5f);
         particles.transform.position = new Vector3(particles.transform.position.x, ratio / 2, particles.transform.position.z);
 
         currentHealth -= burnRate.Value * Time.deltaTime;

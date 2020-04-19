@@ -45,7 +45,7 @@ public class SpawnScript : MonoBehaviour
 
     private void SpawnAgent()
     {
-        GameObject go = Instantiate(agentPrefab, transform.position, Quaternion.identity);
+        GameObject go = Instantiate(agentPrefab, transform.position, transform.rotation);
         go.transform.SetParent(parent.transform);
         timeSinceLastSpawn = maxTime.Value;
     }

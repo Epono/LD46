@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PathMaterialPBR
-  m_Shader: {fileID: -6465566751694194690, guid: 41a95aa7a88567248aa9071c1484972e,
+  m_Name: PathUnlitMaterial
+  m_Shader: {fileID: -6465566751694194690, guid: dfe38482f7783064c9e0bf64eea5997e,
     type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -20,6 +20,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Texture2D_C213BA7F:
+        m_Texture: {fileID: 2800000, guid: 1aebf1dadf95263439b266a77d504b5c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - Texture2D_F1265161:
         m_Texture: {fileID: 2800000, guid: 1aebf1dadf95263439b266a77d504b5c, type: 3}
         m_Scale: {x: 1, y: 1}

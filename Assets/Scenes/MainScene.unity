@@ -1334,17 +1334,9 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_IsSelectable: 1
-  m_SelectedFaces: 00000000
-  m_SelectedEdges:
-  - a: 2
-    b: 3
-  - a: 3
-    b: 0
-  - a: 1
-    b: 2
-  - a: 0
-    b: 1
-  m_SelectedVertices: 02000000030000000000000001000000
+  m_SelectedFaces: 
+  m_SelectedEdges: []
+  m_SelectedVertices: 
 --- !u!23 &299338820
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1376,7 +1368,7 @@ MeshRenderer:
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 2
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -8002,7 +7994,7 @@ PrefabInstance:
     - target: {fileID: 4905806842132445650, guid: 0f0b8c3bc8e08654e82497136460ab44,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f0b8c3bc8e08654e82497136460ab44, type: 3}

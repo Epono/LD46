@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -35,6 +36,10 @@ public class AgentScript : MonoBehaviour
     public ParticleSystem particlesDead;
 
     [SerializeField]
+    public ParticleSystem particlesSacrifice;
+
+    //
+    [SerializeField]
     public Transform canvasTransform;
 
     [SerializeField]
@@ -50,6 +55,8 @@ public class AgentScript : MonoBehaviour
     public float moneyPerKill;
     public float damageToGoal;
 
+    public GameObject model;
+
     public void Init(bool IsSimple)
     {
         this.isSimple = IsSimple;
@@ -58,6 +65,8 @@ public class AgentScript : MonoBehaviour
         {
             modelSimple.SetActive(true);
             modelDouble.SetActive(false);
+
+            model = modelSimple;
 
             health = maxHealthSimple.Value;
             moneyPerKill = moneyPerKillSimple.Value;
@@ -69,6 +78,8 @@ public class AgentScript : MonoBehaviour
         {
             modelSimple.SetActive(false);
             modelDouble.SetActive(true);
+
+            model = modelDouble;
 
             health = maxHealthDouble.Value;
             moneyPerKill = moneyPerKillDouble.Value;
@@ -106,6 +117,8 @@ public class AgentScript : MonoBehaviour
         canvasTransform.localRotation = Quaternion.Euler(rot);
     }
 
+    public bool iAmDead = false;
+
     public void TakeDamage(float value)
     {
         particlesHit.Play();
@@ -115,11 +128,34 @@ public class AgentScript : MonoBehaviour
         {
             if (this != null)
             {
-                particlesDead.gameObject.SetActive(true);
+                particlesDead.Play();
+                iAmDead = true;
 
-                gameObject.SetActive(false);
+                //model.SetActive(false);
+                float duration = isSimple ? 2.0f : 3.0f;
+                model.transform.DOMoveY(-5.0f, duration).SetEase(Ease.Linear);
+                float randomValue = Random.value;
+                if (randomValue > 0.75)
+                {
+                    model.transform.DOLocalRotate(new Vector3(0, 0, 90), duration, RotateMode.LocalAxisAdd);
+                }
+                else if (randomValue > 0.50)
+                {
+                    model.transform.DOLocalRotate(new Vector3(0, 0, -90), duration, RotateMode.LocalAxisAdd);
+                }
+                else if (randomValue > 0.25)
+                {
+                    model.transform.DOLocalRotate(new Vector3(90, 0, 0), duration, RotateMode.LocalAxisAdd);
+                }
+                else
+                {
+                    model.transform.DOLocalRotate(new Vector3(-90, 0, 0), duration, RotateMode.LocalAxisAdd);
+                }
+                //navMeshAgent.isStopped = true;
+                canvasTransform.gameObject.SetActive(false);
                 GetComponent<SphereCollider>().enabled = false;
-                Destroy(this.gameObject, 1.0f);
+                ManagerManagerScript.Instance.agents.Remove(this);
+
 
                 ManagerManagerScript.Instance.goalScript.currentHealth += moneyPerKill;
 
@@ -127,6 +163,8 @@ public class AgentScript : MonoBehaviour
                 {
                     ManagerManagerScript.Instance.goalScript.currentHealth = ManagerManagerScript.Instance.goalScript.maxHealth.Value;
                 }
+
+                Destroy(this.gameObject, 5.0f);
             }
         }
     }

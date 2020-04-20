@@ -10,7 +10,7 @@ public class TowerScript : MonoBehaviour
 {
     public List<AgentScript> agentScripts = new List<AgentScript>();
 
-    private float timeBeforeNextShot = 0.5f;
+    public float timeBeforeNextShot = 0.5f;
 
     [SerializeField]
     GameObject particles;
@@ -79,12 +79,15 @@ public class TowerScript : MonoBehaviour
         }
     }
 
+    public Tweener transformTweener;
+    public Tweener particlesTweener;
+
     void Start()
     {
         bulletsParent = GameObject.Find("Bullets");
         timeSinceCreated = 0;
-        model.transform.DOScale(0.25f, lifeSpan).SetEase(Ease.Linear);
-        particles.transform.DOScale(0.25f, lifeSpan).SetEase(Ease.Linear);
+        transformTweener = model.transform.DOScale(0.25f, lifeSpan).SetEase(Ease.Linear);
+        particlesTweener = particles.transform.DOScale(0.25f, lifeSpan).SetEase(Ease.Linear);
     }
 
     void Update()
@@ -97,7 +100,7 @@ public class TowerScript : MonoBehaviour
             {
                 while (agentScripts.Count > 0)
                 {
-                    if (agentScripts[0] == null || !agentScripts[0].gameObject.active)
+                    if (agentScripts[0] == null || agentScripts[0].iAmDead)
                     {
                         agentScripts.RemoveAt(0);
                     }
@@ -117,7 +120,7 @@ public class TowerScript : MonoBehaviour
         timeSinceCreated += Time.deltaTime;
         if (timeSinceCreated >= lifeSpan)
         {
-            ManagerManagerScript.Instance.towerScripts.Remove(this);
+            ManagerManagerScript.Instance.towers.Remove(this);
             gameObject.SetActive(false);
             Destroy(this.gameObject);
         }

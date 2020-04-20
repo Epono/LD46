@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UIElements;
+using DG.Tweening;
 
 public class SoundManagerScript : MonoBehaviour
 {
     public enum AudioClips
     {
-        DoorsClose,
+        TowerInvalidLocation,
         DoorsOpen,
         ForkliftMoving,
         GameLose,
@@ -34,7 +35,7 @@ public class SoundManagerScript : MonoBehaviour
         ShipDriveBy,
         ShipWarning, // Multiple
         ToolBlowtorch,
-        ToolGet
+        TowerNotEnoughMoney
     };
 
     public static SoundManagerScript instance = null;
@@ -63,7 +64,7 @@ public class SoundManagerScript : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
+        //DontDestroyOnLoad(this.gameObject);
 
         if (instance == null)
         {
@@ -83,7 +84,9 @@ public class SoundManagerScript : MonoBehaviour
         {
             source.volume = 0.0f;
         }
-        StartCoroutine(DelayPlayMusic());
+
+        baseVolume = 0.0f;
+        DOTween.To(() => baseVolume, x => baseVolume = x, 0.1f, 2.0f);
 
         VolumeData volumeData0 = new VolumeData(-1, -1, -1000, 10, 10, 20);
         VolumeData volumeData1 = new VolumeData(10, 20, 20, 25, 25, 35);

@@ -79,7 +79,7 @@ public class ManagerManagerScript : MonoBehaviour
         {
             Vector3 towerGhostPosition = hit.point;
             towerGhostPosition.x = (float)Math.Round(towerGhostPosition.x + 0.5);
-            towerGhostPosition.y = 0.0f;
+            towerGhostPosition.y = 0.1f;
             towerGhostPosition.z = (float)Math.Round(towerGhostPosition.z + 0.5);
             towerGhostScript.transform.position = towerGhostPosition;
 

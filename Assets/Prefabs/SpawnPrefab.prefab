@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 4553148142988260082}
   - component: {fileID: 5158279396988544831}
   m_Layer: 0
-  m_Name: Spawn
+  m_Name: SpawnPrefab
   m_TagString: Spawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -139,6 +139,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agentPrefab: {fileID: 5060029254486330664, guid: d0712559d7daf5947885817e363f2840,
     type: 3}
-  minTime: {fileID: 11400000, guid: c505523f0e49a5a4f90cd7cad09f3902, type: 2}
-  maxTime: {fileID: 11400000, guid: 6b619e60f89c5f6408cb4a973844fc7d, type: 2}
-  timeSinceLastSpawn: 0
+  minTimeSimple: {fileID: 11400000, guid: c505523f0e49a5a4f90cd7cad09f3902, type: 2}
+  minTimeDouble: {fileID: 11400000, guid: 454b9b3d11c7c054cb6fd69b56717b3d, type: 2}
+  maxTimeSimple: {fileID: 11400000, guid: 6b619e60f89c5f6408cb4a973844fc7d, type: 2}
+  maxTimeDouble: {fileID: 11400000, guid: 1ce20693e28fb8847b326ab1f20e8204, type: 2}
+  timeSinceLastSpawnSimple: 0
+  timeSinceLastSpawnDouble: 0

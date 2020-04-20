@@ -9,44 +9,57 @@ public class SpawnScript : MonoBehaviour
     GameObject agentPrefab;
 
     [SerializeField]
-    FloatVariable minTime;
+    FloatVariable minTimeSimple;
+    [SerializeField]
+    FloatVariable minTimeDouble;
 
     [SerializeField]
-    FloatVariable maxTime;
+    FloatVariable maxTimeSimple;
+    [SerializeField]
+    FloatVariable maxTimeDouble;
 
-    public float timeSinceLastSpawn;
+    public float timeSinceLastSpawnSimple;
+    public float timeSinceLastSpawnDouble;
 
     GameObject parent;
 
     void Start()
     {
         ManagerManagerScript.Instance.spawns.Add(this);
-        timeSinceLastSpawn = Random.Range(0.5f, minTime.Value);
+        timeSinceLastSpawnSimple = Random.Range(0.5f, minTimeSimple.Value);
+        timeSinceLastSpawnDouble = 2 * maxTimeDouble.Value;
 
         parent = GameObject.Find("Agents");
     }
 
     void Update()
     {
-        timeSinceLastSpawn -= Time.deltaTime;
-        if (timeSinceLastSpawn <= 0)
+        timeSinceLastSpawnSimple -= Time.deltaTime;
+        timeSinceLastSpawnDouble -= Time.deltaTime;
+
+        if (timeSinceLastSpawnSimple <= 0 || (timeSinceLastSpawnSimple <= minTimeSimple.Value && Random.value > 0.999))
         {
-            SpawnAgent();
+            SpawnAgent(true);
         }
-        else if (timeSinceLastSpawn <= minTime.Value)
+
+        if (timeSinceLastSpawnDouble <= 0 || (timeSinceLastSpawnDouble <= minTimeDouble.Value && Random.value > 0.999))
         {
-            // Chance
-            if (Random.value > 0.999)
-            {
-                SpawnAgent();
-            }
+            SpawnAgent(false);
         }
     }
 
-    private void SpawnAgent()
+    private void SpawnAgent(bool simple)
     {
         GameObject go = Instantiate(agentPrefab, transform.position, transform.rotation);
         go.transform.SetParent(parent.transform);
-        timeSinceLastSpawn = maxTime.Value;
+        go.GetComponent<AgentScript>().Init(simple);
+        if (simple)
+        {
+            timeSinceLastSpawnSimple = maxTimeSimple.Value;
+        }
+        else
+        {
+            timeSinceLastSpawnDouble = maxTimeDouble.Value;
+        }
     }
 }

@@ -10,28 +10,81 @@ public class TowerScript : MonoBehaviour
 {
     public List<AgentScript> agentScripts = new List<AgentScript>();
 
-    [SerializeField]
-    FloatVariable timeBetweenShots;
     private float timeBeforeNextShot = 0.5f;
 
     [SerializeField]
-    FloatVariable damage;
+    GameObject particles;
+
+    //
+    [SerializeField]
+    GameObject modelSimple;
 
     [SerializeField]
-    FloatVariable towerLifeSpan;
+    GameObject modelDouble;
 
+    //
+    [SerializeField]
+    FloatVariable timeBetweenShotsSimple;
+    [SerializeField]
+    FloatVariable damageSimple;
+    [SerializeField]
+    FloatVariable lifeSpanSimple;
+
+    //
+    [SerializeField]
+    FloatVariable timeBetweenShotsDouble;
+    [SerializeField]
+    FloatVariable damageDouble;
+    [SerializeField]
+    FloatVariable lifeSpanDouble;
+
+    //
     [SerializeField]
     GameObject bulletPrefab;
 
     GameObject bulletsParent;
+    GameObject model;
 
     public float timeSinceCreated;
+    public bool isSimple;
+
+    public float lifeSpan;
+    public float damage;
+    public float timeBetweenShots;
+
+    public void Init(bool isSimple)
+    {
+        this.isSimple = isSimple;
+        if (isSimple)
+        {
+            lifeSpan = lifeSpanSimple.Value;
+            damage = damageSimple.Value;
+            timeBetweenShots = timeBetweenShotsSimple.Value;
+            
+            modelSimple.SetActive(true);
+            modelDouble.SetActive(false);
+
+            model = modelSimple;
+        }
+        else
+        {
+            lifeSpan = lifeSpanDouble.Value;
+            damage = damageDouble.Value;
+            timeBetweenShots = timeBetweenShotsDouble.Value;
+            
+            modelSimple.SetActive(false);
+            modelDouble.SetActive(true);
+
+            model = modelDouble;
+        }
+    }
 
     void Start()
     {
         bulletsParent = GameObject.Find("Bullets");
         timeSinceCreated = 0;
-        transform.DOScaleY(0, towerLifeSpan.Value).SetEase(Ease.Linear);
+        model.transform.DOScale(0.25f, lifeSpan).SetEase(Ease.Linear);
+        particles.transform.DOScale(0.25f, lifeSpan).SetEase(Ease.Linear);
     }
 
     void Update()
@@ -44,7 +97,7 @@ public class TowerScript : MonoBehaviour
             {
                 while (agentScripts.Count > 0)
                 {
-                    if (agentScripts[0] == null)
+                    if (agentScripts[0] == null || !agentScripts[0].gameObject.active)
                     {
                         agentScripts.RemoveAt(0);
                     }
@@ -58,11 +111,11 @@ public class TowerScript : MonoBehaviour
         }
         else
         {
-            timeBeforeNextShot = timeBetweenShots.Value;
+            timeBeforeNextShot = timeBetweenShots;
         }
 
         timeSinceCreated += Time.deltaTime;
-        if(timeSinceCreated >= towerLifeSpan.Value)
+        if (timeSinceCreated >= lifeSpan)
         {
             ManagerManagerScript.Instance.towerScripts.Remove(this);
             gameObject.SetActive(false);
@@ -81,7 +134,7 @@ public class TowerScript : MonoBehaviour
         target.z += agentScript.navMeshAgent.velocity.z * duration;
         bullet.transform.DOMove(target, duration).OnComplete(() => OnCompleteCallback(agentScript, bullet)).SetEase(Ease.Linear);
 
-        timeBeforeNextShot = timeBetweenShots.Value;
+        timeBeforeNextShot = timeBetweenShots;
     }
 
     private void OnCompleteCallback(AgentScript agentScript, GameObject bullet)
@@ -91,14 +144,14 @@ public class TowerScript : MonoBehaviour
 
         if (agentScript != null)
         {
-            agentScript.TakeDamage(damage.Value);
+            agentScript.TakeDamage(damage);
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         AgentScript agentScript = other.gameObject.GetComponent<AgentScript>();
-        if (agentScript != null)
+        if (agentScript != null && agentScript.gameObject.active)
         {
             agentScripts.Add(agentScript);
         }

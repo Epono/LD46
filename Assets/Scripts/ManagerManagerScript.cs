@@ -40,9 +40,6 @@ public class ManagerManagerScript : MonoBehaviour
     [SerializeField]
     FloatVariable towerCost;
 
-    [SerializeField]
-    public FloatVariable moneyPerKill;
-
     private TowerGhostScript towerGhostScript;
     private GameObject towerGhost;
 
@@ -75,11 +72,20 @@ public class ManagerManagerScript : MonoBehaviour
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            towerGhostScript.ChangeSimple(false);
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            towerGhostScript.ChangeSimple(true);
+        }
+
         if (Physics.Raycast(ray, out hit, 100, layerMask))
         {
             Vector3 towerGhostPosition = hit.point;
             towerGhostPosition.x = (float)Math.Round(towerGhostPosition.x + 0.5);
-            towerGhostPosition.y = 0.1f;
+            towerGhostPosition.y = 0.0f;
             towerGhostPosition.z = (float)Math.Round(towerGhostPosition.z + 0.5);
             towerGhostScript.transform.position = towerGhostPosition;
 
@@ -92,7 +98,9 @@ public class ManagerManagerScript : MonoBehaviour
                         towerGhostPosition.y = 0.0f;
                         GameObject newTower = Instantiate(towerPrefab, towerGhostPosition, Quaternion.identity);
                         newTower.transform.SetParent(towersParent.transform);
-                        towerScripts.Add(newTower.GetComponent<TowerScript>());
+                        TowerScript towerScript = newTower.GetComponent<TowerScript>();
+                        towerScript.Init(!Input.GetKey(KeyCode.LeftShift));
+                        towerScripts.Add(towerScript);
                         goalScript.currentHealth -= towerCost.Value;
                     }
                     else

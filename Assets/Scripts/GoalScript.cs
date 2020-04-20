@@ -13,9 +13,6 @@ public class GoalScript : MonoBehaviour
     FloatVariable initialHealth;
 
     [SerializeField]
-    FloatVariable damagePerAgent;
-
-    [SerializeField]
     FloatVariable burnRate;
 
     [SerializeField]
@@ -52,11 +49,11 @@ public class GoalScript : MonoBehaviour
     {
         if (agentScript != null)
         {
-            agentScript.particles.Play();
+            agentScript.particlesHit.Play();
             agentScript.gameObject.GetComponent<MeshRenderer>().enabled = false;
             Destroy(agentScript.gameObject, 0.5f);
 
-            currentHealth -= damagePerAgent.Value;
+            currentHealth -= agentScript.damageToGoal;
             if (currentHealth <= 0)
             {
                 Debug.Log("Game over");

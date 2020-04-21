@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10f01816035f02c4b9c08511b3dd7a84, type: 3}
   m_Name: AgentDoubleDamageToGoal
   m_EditorClassIdentifier: 
-  Value: 5
+  Value: 7

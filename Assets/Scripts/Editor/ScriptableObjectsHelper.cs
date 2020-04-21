@@ -59,6 +59,7 @@ public class ScriptableObjectsHelper : EditorWindow
         foreach (FloatVariable variable in player)
         {
             variable.Value = EditorGUILayout.Slider(variable.name.Replace("Player", ""), variable.Value, 0, 200);
+            EditorUtility.SetDirty(variable);
         }
         EditorGUILayout.Space();
         EditorGUILayout.Space();
@@ -68,6 +69,7 @@ public class ScriptableObjectsHelper : EditorWindow
         foreach (FloatVariable variable in agentSimple)
         {
             variable.Value = EditorGUILayout.Slider(variable.name.Replace("AgentSimple", ""), variable.Value, 0, 200);
+            EditorUtility.SetDirty(variable);
         }
         EditorGUILayout.Space();
 
@@ -75,6 +77,7 @@ public class ScriptableObjectsHelper : EditorWindow
         foreach (FloatVariable variable in agentDouble)
         {
             variable.Value = EditorGUILayout.Slider(variable.name.Replace("AgentDouble", ""), variable.Value, 0, 200);
+            EditorUtility.SetDirty(variable);
         }
         EditorGUILayout.Space();
         EditorGUILayout.Space();
@@ -84,6 +87,7 @@ public class ScriptableObjectsHelper : EditorWindow
         foreach (FloatVariable variable in towerSimple)
         {
             variable.Value = EditorGUILayout.Slider(variable.name.Replace("TowerSimple", ""), variable.Value, 0, 200);
+            EditorUtility.SetDirty(variable);
         }
         EditorGUILayout.Space();
 
@@ -91,6 +95,7 @@ public class ScriptableObjectsHelper : EditorWindow
         foreach (FloatVariable variable in towerDouble)
         {
             variable.Value = EditorGUILayout.Slider(variable.name.Replace("TowerDouble", ""), variable.Value, 0, 200);
+            EditorUtility.SetDirty(variable);
         }
         EditorGUILayout.Space();
         EditorGUILayout.Space();
@@ -100,6 +105,7 @@ public class ScriptableObjectsHelper : EditorWindow
         foreach (FloatVariable variable in others)
         {
             variable.Value = EditorGUILayout.Slider(variable.name, variable.Value, 0, 200);
+            EditorUtility.SetDirty(variable);
         }
     }
 }

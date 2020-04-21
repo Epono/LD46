@@ -5,57 +5,56 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class SoundManagerScript : MonoBehaviour
 {
-    public enum AudioClips
-    {
-        TowerInvalidLocation,
-        DoorsOpen,
-        ForkliftMoving,
-        GameLose,
-        GameWin,
-        MenuSelect,
-        MenuStart,
-        ObjectFallsHeavy, // Multiple
-        ObjectFallsLight, // Multiple
-        ObjectPickUp,
-        //ObjectPickUpAlternative,
-        ObjectPutColor,
-        ObjectPutWorkbench,
-        ObjectRepair,
-        //ObjectRepairAlternative,
-        ObjectThrow, // Multiple
-        PlayerRolling,
-        //PlayerRollingLoopOriginal,
-        ShipArriving,
-        ShipConnectPiece,
-        ShipCrashDoor,
-        ShipLeaving,
-        ShipDriveBy,
-        ShipWarning, // Multiple
-        ToolBlowtorch,
-        TowerNotEnoughMoney
-    };
 
     public static SoundManagerScript instance = null;
 
     public List<AudioSource> musicSources;
     public AudioSource sfxSource;
 
-    //public AudioSource player1Source;
-    //public AudioSource player2Source;
+    public enum AudioClips
+    {
+        MainMenu,
+        TryAgain,
+        Exit,
+        GameLose,
+        GameWin,
+        TowerInvalidLocation,
+        TowerNotEnoughMoney,
+        TowerPlaced,
+        TowerSimpleShoot,
+        TowerDoubleShoot,
+        AgentSimpleDead,
+        AgentDoubleDead,
+        GoalHurt
+    };
 
-    bool muteSFX = false;
 
+    [Header("Menu")]
+    public AudioClip mainMenu;
+    public AudioClip tryAgain;
+    public AudioClip exit;
 
     [Header("Game")]
     public AudioClip gameLose;
     public AudioClip gameWin;
 
-    [Header("Menu")]
-    public AudioClip menuSelect;
-    public AudioClip menuStart;
+    [Header("Tower")]
+    public AudioClip towerInvalidLocation;
+    public AudioClip towerNotEnoughMoney;
+    public AudioClip towerPlaced;
+    public AudioClip towerSimpleShoot;
+    public AudioClip towerDoubleShoot;
+
+    [Header("Agent")]
+    public AudioClip agentSimpleDead;
+    public AudioClip agentDoubleDead;
+
+    [Header("Agent")]
+    public AudioClip goalHurt;
 
     [SerializeField]
     float baseVolume = 0.1f;
@@ -132,39 +131,34 @@ public class SoundManagerScript : MonoBehaviour
 
     private void Update()
     {
-
-        float currentHealth = ManagerManagerScript.Instance.goalScript.currentHealth;
-        
-
-        for (int i = 0; i < musicSources.Count; i++)
+        if (SceneManager.GetActiveScene().name == "MainScene")
         {
-            AudioSource musicSource = musicSources[i];
-            VolumeData volumeData = volumeDatas[i];
+            float currentHealth = ManagerManagerScript.Instance.goalScript.currentHealth;
 
-            if (currentHealth > volumeData.minAscendingVolume && currentHealth < volumeData.maxAscendingVolume)
+            for (int i = 0; i < musicSources.Count; i++)
             {
-                musicSource.volume = remap(currentHealth, volumeData.minAscendingVolume, volumeData.maxAscendingVolume, 0.0f, baseVolume);
-            }
-            else if (currentHealth > volumeData.minFullVolume && currentHealth < volumeData.maxFullVolume)
-            {
-                musicSource.volume = baseVolume;
-            }
-            else if (currentHealth > volumeData.minDescendingVolume && currentHealth < volumeData.maxDescendingVolume)
-            {
-                musicSource.volume = baseVolume - remap(currentHealth, volumeData.minDescendingVolume, volumeData.maxDescendingVolume, 0.0f, baseVolume);
-            }
-            else
-            {
-                //Debug.Log(currentHealth);
-                musicSource.volume = 0.0f;
+                AudioSource musicSource = musicSources[i];
+                VolumeData volumeData = volumeDatas[i];
+
+                if (currentHealth > volumeData.minAscendingVolume && currentHealth < volumeData.maxAscendingVolume)
+                {
+                    musicSource.volume = remap(currentHealth, volumeData.minAscendingVolume, volumeData.maxAscendingVolume, 0.0f, baseVolume);
+                }
+                else if (currentHealth > volumeData.minFullVolume && currentHealth < volumeData.maxFullVolume)
+                {
+                    musicSource.volume = baseVolume;
+                }
+                else if (currentHealth > volumeData.minDescendingVolume && currentHealth < volumeData.maxDescendingVolume)
+                {
+                    musicSource.volume = baseVolume - remap(currentHealth, volumeData.minDescendingVolume, volumeData.maxDescendingVolume, 0.0f, baseVolume);
+                }
+                else
+                {
+                    //Debug.Log(currentHealth);
+                    musicSource.volume = 0.0f;
+                }
             }
         }
-    }
-
-    IEnumerator DelayPlayMusic()
-    {
-        yield return new WaitForSeconds(1.0f);
-        PlayMusic();
     }
 
     public void PlayOneShotSound(AudioClips clipType)
@@ -173,18 +167,46 @@ public class SoundManagerScript : MonoBehaviour
         switch (clipType)
         {
 
+            case AudioClips.MainMenu:
+                clip = mainMenu;
+                break;
+            case AudioClips.TryAgain:
+                clip = tryAgain;
+                break;
+            case AudioClips.Exit:
+                clip = exit;
+                break;
             case AudioClips.GameLose:
                 clip = gameLose;
                 break;
             case AudioClips.GameWin:
                 clip = gameWin;
                 break;
-            case AudioClips.MenuSelect:
-                clip = menuSelect;
+            case AudioClips.TowerInvalidLocation:
+                clip = towerInvalidLocation;
                 break;
-            case AudioClips.MenuStart:
-                clip = menuStart;
+            case AudioClips.TowerNotEnoughMoney:
+                clip = towerNotEnoughMoney;
                 break;
+            case AudioClips.TowerPlaced:
+                clip = towerPlaced;
+                break;
+            case AudioClips.TowerSimpleShoot:
+                clip = towerSimpleShoot;
+                break;
+            case AudioClips.TowerDoubleShoot:
+                clip = towerDoubleShoot;
+                break;
+            case AudioClips.AgentSimpleDead:
+                clip = agentSimpleDead;
+                break;
+            case AudioClips.AgentDoubleDead:
+                clip = agentDoubleDead;
+                break;
+            case AudioClips.GoalHurt:
+                clip = goalHurt;
+                break;
+
                 //case AudioClips.ObjectFallsHeavy:
                 //    clip = objectFallsHeavy[Random.Range(0, objectFallsHeavy.Count)];
                 //    break;
@@ -194,21 +216,4 @@ public class SoundManagerScript : MonoBehaviour
             sfxSource.PlayOneShot(clip);
         }
     }
-
-    public void PlayMusic()
-    {
-        //musicSource.Play();
-    }
-
-
-    public void MuteSound()
-    {
-        //musicSource.mute = !musicSource.mute;
-    }
-
-    public void MuteSFX()
-    {
-        sfxSource.mute = !sfxSource.mute;
-    }
-
 }

@@ -40,7 +40,10 @@ public class ManagerManagerScript : MonoBehaviour
     public GameObject towerPrefab;
 
     [SerializeField]
-    FloatVariable towerCost;
+    FloatVariable towerCostSimple;
+
+    [SerializeField]
+    FloatVariable towerCostDouble;
 
     private TowerGhostScript towerGhostScript;
     private GameObject towerGhost;
@@ -78,6 +81,54 @@ public class ManagerManagerScript : MonoBehaviour
     [SerializeField]
     Button quitButton;
 
+    // Spéciale dédicace à Lucas
+    [SerializeField]
+    Slider sliderVictory;
+
+    [SerializeField]
+    FloatVariable playerVictoryTimer;
+
+    public float elapsedTime = 0;
+
+    //
+    [SerializeField]
+    GameObject infoPanel;
+
+    [SerializeField]
+    Text towerSimpleDPS;
+
+    [SerializeField]
+    Text towerSimpleLifespan;
+
+    [SerializeField]
+    Text towerSimpleCost;
+
+    [SerializeField]
+    Text towerDoubleDPS;
+
+    [SerializeField]
+    Text towerDoubleLifespan;
+
+    [SerializeField]
+    Text towerDoubleCost;
+
+    //
+
+    [SerializeField]
+    FloatVariable timeBetweenShotsSimple;
+    [SerializeField]
+    FloatVariable damageSimple;
+    [SerializeField]
+    FloatVariable lifeSpanSimple;
+
+    //
+    [SerializeField]
+    FloatVariable timeBetweenShotsDouble;
+    [SerializeField]
+    FloatVariable damageDouble;
+    [SerializeField]
+    FloatVariable lifeSpanDouble;
+
     void Start()
     {
         towerGhost = Instantiate(towerGhostPrefab, new Vector3(100, 100, 100), Quaternion.identity);
@@ -103,11 +154,48 @@ public class ManagerManagerScript : MonoBehaviour
 
         var quitButtonText = quitButton.GetComponentInChildren<Text>();
         quitButtonText.color = new Color(quitButtonText.color.r, quitButtonText.color.g, quitButtonText.color.b, 0);
+
+        sliderVictory.maxValue = playerVictoryTimer.Value;
+        infoPanel.SetActive(false);
+
+        towerSimpleDPS.text = "" + Math.Round(damageSimple.Value / timeBetweenShotsSimple.Value, 1) + " DPS";
+        towerSimpleLifespan.text = lifeSpanSimple.Value + " s";
+        towerSimpleCost.text = "" + towerCostSimple.Value;
+
+        towerDoubleDPS.text = "" + Math.Round((damageDouble.Value / timeBetweenShotsDouble.Value), 1) + " DPS";
+        towerDoubleLifespan.text = lifeSpanDouble.Value + " s";
+        towerDoubleCost.text = "" + towerCostDouble.Value;
     }
 
     void Update()
     {
         slider.value = goalScript.currentHealth;
+
+        elapsedTime += Time.deltaTime;
+        sliderVictory.value = elapsedTime;
+
+        if (elapsedTime >= playerVictoryTimer.Value && !gameOver)
+        {
+            GameOver(true);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            infoPanel.SetActive(true);
+        }
+        if (Input.GetKeyUp(KeyCode.Tab))
+        {
+            infoPanel.SetActive(false);
+        }
+        if (Input.GetKeyDown(KeyCode.Keypad5))
+        {
+            infoPanel.SetActive(!infoPanel.active);
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+
 
         healthText.text = (int)goalScript.currentHealth + " / " + (int)goalScript.maxHealth.Value;
 
@@ -121,6 +209,7 @@ public class ManagerManagerScript : MonoBehaviour
         {
             towerGhostScript.ChangeSimple(true);
         }
+        bool shiftDown = Input.GetKey(KeyCode.LeftShift);
 
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -136,15 +225,19 @@ public class ManagerManagerScript : MonoBehaviour
             {
                 if (IsValidPosition(towerGhostPosition))
                 {
-                    if (goalScript.currentHealth > towerCost.Value)
+                    if (!shiftDown && goalScript.currentHealth > towerCostSimple.Value + 5
+                        || shiftDown && goalScript.currentHealth > towerCostDouble.Value + 5)
                     {
                         towerGhostPosition.y = 0.0f;
                         GameObject newTower = Instantiate(towerPrefab, towerGhostPosition, Quaternion.identity);
                         newTower.transform.SetParent(towersParent.transform);
                         TowerScript towerScript = newTower.GetComponent<TowerScript>();
-                        towerScript.Init(!Input.GetKey(KeyCode.LeftShift));
+                        towerScript.Init(!shiftDown);
                         towers.Add(towerScript);
-                        goalScript.currentHealth -= towerCost.Value;
+
+                        goalScript.currentHealth -= shiftDown ? towerCostDouble.Value : towerCostSimple.Value;
+
+                        SoundManagerScript.instance.PlayOneShotSound(SoundManagerScript.AudioClips.TowerPlaced);
                     }
                     else
                     {
@@ -218,17 +311,27 @@ public class ManagerManagerScript : MonoBehaviour
         this.playerWon = playerWon;
         towerGhost.transform.position = new Vector3(100, 100, 100);
         slider.gameObject.SetActive(false);
+        sliderVictory.gameObject.SetActive(false);
 
         foreach (SpawnScript spawn in spawns)
         {
             spawn.gameObject.SetActive(false);
         }
 
-        foreach (AgentScript agent in agents)
+        for (int i = agents.Count - 1; i >= 0; i--)
+        //foreach (AgentScript agent in agents)
         {
-            if (agent != null)
+            AgentScript agent = agents[i];
+            if (playerWon)
             {
-                agent.navMeshAgent.isStopped = true;
+                agent.TakeDamage(1000);
+            }
+            else
+            {
+                if (agent != null)
+                {
+                    agent.navMeshAgent.isStopped = true;
+                }
             }
         }
 
@@ -250,7 +353,7 @@ public class ManagerManagerScript : MonoBehaviour
         quitButton.onClick.AddListener(() => Application.Quit());
 #endif
 
-        tryAgainButton.onClick.AddListener(() => SceneManager.LoadScene("MainScene"));
+        tryAgainButton.onClick.AddListener(() => StartCoroutine(LoadScene()));
 
         if (playerWon)
         {
@@ -277,6 +380,8 @@ public class ManagerManagerScript : MonoBehaviour
         IEnumerator cotry = FadeInAfterDelay(quitButton.GetComponent<Image>(), 4.5f, 0.5f);
         IEnumerator cotry2 = FadeInAfterDelay(quitButton.GetComponentInChildren<Text>(), 4.5f, 0.5f);
 
+        IEnumerator coSound = PlaySoundAfterDelay(3.0f);
+
         StartCoroutine(cogo1);
         StartCoroutine(cogo2);
         StartCoroutine(cogo3);
@@ -284,6 +389,20 @@ public class ManagerManagerScript : MonoBehaviour
         StartCoroutine(coquit2);
         StartCoroutine(cotry);
         StartCoroutine(cotry2);
+        StartCoroutine(coSound);
+    }
+
+    IEnumerator PlaySoundAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (playerWon)
+        {
+            SoundManagerScript.instance.PlayOneShotSound(SoundManagerScript.AudioClips.GameWin);
+        }
+        else
+        {
+            SoundManagerScript.instance.PlayOneShotSound(SoundManagerScript.AudioClips.GameLose);
+        }
     }
 
     IEnumerator FadeInAfterDelay(Text text, float delay, float duration)
@@ -302,6 +421,13 @@ public class ManagerManagerScript : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         obj.SetActive(true);
+    }
+
+    IEnumerator LoadScene()
+    {
+        SoundManagerScript.instance.PlayOneShotSound(SoundManagerScript.AudioClips.TryAgain);
+        yield return new WaitForSeconds(1.0f);
+        SceneManager.LoadScene("MainScene");
     }
 }
 

@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
-using UnityEditor.U2D.Sprites;
+//using UnityEditor.U2D.Sprites;
 using UnityEngine;
 
 public class GoalScript : MonoBehaviour
@@ -59,6 +59,7 @@ public class GoalScript : MonoBehaviour
     {
         if (agentScript != null)
         {
+            SoundManagerScript.instance.PlayOneShotSound(SoundManagerScript.AudioClips.GoalHurt);
             agentScript.particlesHit.Play();
             agentScript.gameObject.GetComponent<MeshRenderer>().enabled = false;
             agentScript.model.SetActive(false);
@@ -74,6 +75,7 @@ public class GoalScript : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+
         if (currentHealth <= 0)
         {
             ManagerManagerScript.Instance.GameOver(false);

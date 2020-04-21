@@ -18,31 +18,31 @@ public class SpawnScript : MonoBehaviour
     [SerializeField]
     FloatVariable maxTimeDouble;
 
-    public float timeSinceLastSpawnSimple;
-    public float timeSinceLastSpawnDouble;
+    public float timeUntilNextSpawnSimple;
+    public float timeUntilNextSpawnDouble;
 
     GameObject parent;
 
     void Start()
     {
         ManagerManagerScript.Instance.spawns.Add(this);
-        timeSinceLastSpawnSimple = Random.Range(0.5f, minTimeSimple.Value);
-        timeSinceLastSpawnDouble = 2 * maxTimeDouble.Value;
+        timeUntilNextSpawnSimple = Random.Range(0.5f, minTimeSimple.Value);
+        timeUntilNextSpawnDouble = 15.0f;
 
         parent = GameObject.Find("Agents");
     }
 
     void Update()
     {
-        timeSinceLastSpawnSimple -= Time.deltaTime;
-        timeSinceLastSpawnDouble -= Time.deltaTime;
+        timeUntilNextSpawnSimple -= Time.deltaTime;
+        timeUntilNextSpawnDouble -= Time.deltaTime;
 
-        if (timeSinceLastSpawnSimple <= 0 || (timeSinceLastSpawnSimple <= minTimeSimple.Value && Random.value > 0.999))
+        if (timeUntilNextSpawnSimple <= 0 || (timeUntilNextSpawnSimple <= minTimeSimple.Value && Random.value > 0.999))
         {
             SpawnAgent(true);
         }
 
-        if (timeSinceLastSpawnDouble <= 0 || (timeSinceLastSpawnDouble <= minTimeDouble.Value && Random.value > 0.999))
+        if (timeUntilNextSpawnDouble <= 0 || (timeUntilNextSpawnDouble <= minTimeDouble.Value && Random.value > 0.999))
         {
             SpawnAgent(false);
         }
@@ -55,11 +55,11 @@ public class SpawnScript : MonoBehaviour
         go.GetComponent<AgentScript>().Init(simple);
         if (simple)
         {
-            timeSinceLastSpawnSimple = maxTimeSimple.Value;
+            timeUntilNextSpawnSimple = maxTimeSimple.Value;
         }
         else
         {
-            timeSinceLastSpawnDouble = maxTimeDouble.Value;
+            timeUntilNextSpawnDouble = maxTimeDouble.Value;
         }
     }
 }

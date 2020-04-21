@@ -46,16 +46,43 @@ MonoBehaviour:
   agents: []
   spawns: []
   intermediaryGoals: []
-  towerScripts: []
+  towers: []
   goal: {fileID: 0}
   goalScript: {fileID: 0}
   towerGhostPrefab: {fileID: 4185592215582407703, guid: 0a5fc3fa582f1e14ab0e07f96c9702f3,
     type: 3}
   towerPrefab: {fileID: 4185592215582407703, guid: 9fadca05ebdb1e74f875c12e54a86121,
     type: 3}
-  towerCost: {fileID: 11400000, guid: 0013680106c9b024699df7233515c3c5, type: 2}
-  moneyPerKill: {fileID: 11400000, guid: 3e21298a05d902f4085808226a3c1699, type: 2}
+  towerCostSimple: {fileID: 11400000, guid: 0013680106c9b024699df7233515c3c5, type: 2}
+  towerCostDouble: {fileID: 11400000, guid: 0c56ffd9db8c3da4abc1cbc7f3552074, type: 2}
   layerMask:
     serializedVersion: 2
-    m_Bits: 7735
+    m_Bits: 4096
   slider: {fileID: 0}
+  healthText: {fileID: 0}
+  gameOver: 0
+  playerWon: 0
+  gameOverPanel: {fileID: 0}
+  gameOverText1: {fileID: 0}
+  gameOverText2: {fileID: 0}
+  gameOverText3: {fileID: 0}
+  tryAgainButton: {fileID: 0}
+  quitButton: {fileID: 0}
+  sliderVictory: {fileID: 0}
+  playerVictoryTimer: {fileID: 0}
+  elapsedTime: 0
+  infoPanel: {fileID: 0}
+  towerSimpleDPS: {fileID: 0}
+  towerSimpleLifespan: {fileID: 0}
+  towerSimpleCost: {fileID: 0}
+  towerDoubleDPS: {fileID: 0}
+  towerDoubleLifespan: {fileID: 0}
+  towerDoubleCost: {fileID: 0}
+  timeBetweenShotsSimple: {fileID: 11400000, guid: b4157c300d899484085b096cfdfddea6,
+    type: 2}
+  damageSimple: {fileID: 11400000, guid: 388319301c1537048a069c2924b9ea9a, type: 2}
+  lifeSpanSimple: {fileID: 11400000, guid: b18d64b948818684ca8af4d3f3654cb9, type: 2}
+  timeBetweenShotsDouble: {fileID: 11400000, guid: de3f54771bbcd504f91b3cac7bb2bfe2,
+    type: 2}
+  damageDouble: {fileID: 11400000, guid: f5ffcfb342350184bba77d7a97d02133, type: 2}
+  lifeSpanDouble: {fileID: 11400000, guid: 5862181837ead1b44a8a503e3cc8b630, type: 2}

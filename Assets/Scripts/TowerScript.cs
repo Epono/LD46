@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using System.Security;
-using System.Threading;
+//using System.Security;
+//using System.Threading;
+using UnityEngine.UI;
 
 public class TowerScript : MonoBehaviour
 {
@@ -60,7 +61,7 @@ public class TowerScript : MonoBehaviour
             lifeSpan = lifeSpanSimple.Value;
             damage = damageSimple.Value;
             timeBetweenShots = timeBetweenShotsSimple.Value;
-            
+
             modelSimple.SetActive(true);
             modelDouble.SetActive(false);
 
@@ -71,7 +72,7 @@ public class TowerScript : MonoBehaviour
             lifeSpan = lifeSpanDouble.Value;
             damage = damageDouble.Value;
             timeBetweenShots = timeBetweenShotsDouble.Value;
-            
+
             modelSimple.SetActive(false);
             modelDouble.SetActive(true);
 
@@ -82,47 +83,63 @@ public class TowerScript : MonoBehaviour
     public Tweener transformTweener;
     public Tweener particlesTweener;
 
+    public bool dummy = false;
+
+    [SerializeField]
+    public Slider sliderHealth;
+
     void Start()
     {
         bulletsParent = GameObject.Find("Bullets");
         timeSinceCreated = 0;
-        transformTweener = model.transform.DOScale(0.25f, lifeSpan).SetEase(Ease.Linear);
-        particlesTweener = particles.transform.DOScale(0.25f, lifeSpan).SetEase(Ease.Linear);
+        if (!dummy)
+        {
+            transformTweener = model.transform.DOScale(0.25f, lifeSpan).SetEase(Ease.Linear);
+            particlesTweener = particles.transform.DOScale(0.25f, lifeSpan).SetEase(Ease.Linear);
+        }
+
+        sliderHealth.maxValue = lifeSpan;
+        sliderHealth.value = lifeSpan;
     }
 
     void Update()
     {
-        if (agentScripts.Count != 0)
+        if (!dummy)
         {
-            timeBeforeNextShot -= Time.deltaTime;
 
-            if (timeBeforeNextShot <= 0)
+            if (agentScripts.Count != 0)
             {
-                while (agentScripts.Count > 0)
+                timeBeforeNextShot -= Time.deltaTime;
+
+                if (timeBeforeNextShot <= 0)
                 {
-                    if (agentScripts[0] == null || agentScripts[0].iAmDead)
+                    while (agentScripts.Count > 0)
                     {
-                        agentScripts.RemoveAt(0);
-                    }
-                    else
-                    {
-                        Shoot(agentScripts[0]);
-                        break;
+                        if (agentScripts[0] == null || agentScripts[0].iAmDead)
+                        {
+                            agentScripts.RemoveAt(0);
+                        }
+                        else
+                        {
+                            Shoot(agentScripts[0]);
+                            break;
+                        }
                     }
                 }
             }
-        }
-        else
-        {
-            timeBeforeNextShot = timeBetweenShots;
-        }
+            else
+            {
+                timeBeforeNextShot = timeBetweenShots;
+            }
 
-        timeSinceCreated += Time.deltaTime;
-        if (timeSinceCreated >= lifeSpan)
-        {
-            ManagerManagerScript.Instance.towers.Remove(this);
-            gameObject.SetActive(false);
-            Destroy(this.gameObject);
+            timeSinceCreated += Time.deltaTime;
+            sliderHealth.value = lifeSpan - timeSinceCreated;
+            if (timeSinceCreated >= lifeSpan)
+            {
+                ManagerManagerScript.Instance.towers.Remove(this);
+                gameObject.SetActive(false);
+                Destroy(this.gameObject);
+            }
         }
     }
 
@@ -147,6 +164,15 @@ public class TowerScript : MonoBehaviour
 
         if (agentScript != null)
         {
+            if (isSimple)
+            {
+                SoundManagerScript.instance.PlayOneShotSound(SoundManagerScript.AudioClips.TowerSimpleShoot);
+            }
+            else
+            {
+                SoundManagerScript.instance.PlayOneShotSound(SoundManagerScript.AudioClips.TowerDoubleShoot);
+            }
+
             agentScript.TakeDamage(damage);
         }
     }

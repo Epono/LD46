@@ -121,15 +121,26 @@ public class AgentScript : MonoBehaviour
 
     public void TakeDamage(float value)
     {
-        particlesHit.Play();
+        
         health -= value;
         sliderHealth.value = health;
         if (health <= 0)
         {
             if (this != null)
             {
+                particlesHit.Play();
                 particlesDead.Play();
                 iAmDead = true;
+
+                if (isSimple)
+                {
+                    SoundManagerScript.instance.PlayOneShotSound(SoundManagerScript.AudioClips.AgentSimpleDead);
+                }
+                else
+                {
+                    SoundManagerScript.instance.PlayOneShotSound(SoundManagerScript.AudioClips.AgentDoubleDead);
+                }
+
 
                 //model.SetActive(false);
                 float duration = isSimple ? 2.0f : 3.0f;

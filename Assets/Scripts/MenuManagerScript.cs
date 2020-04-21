@@ -37,11 +37,11 @@ public class MenuManagerScript : MonoBehaviour
         aflame.color = new Color(aflame.color.r, aflame.color.g, aflame.color.b, 0.0f);
         pressAnyKey.color = new Color(pressAnyKey.color.r, pressAnyKey.color.g, pressAnyKey.color.b, 0.0f);
 
-        IEnumerator coKeep = FadeInAfterDelay(keep, 1.0f, 2.0f);
-        IEnumerator coIt = FadeInAfterDelay(it, 3.0f, 2.0f);
-        IEnumerator coAflame = FadeInAfterDelay(aflame, 5.0f, 4.0f);
-        IEnumerator coPress = FadeInPress(7.0f);
-        IEnumerator coVideo = WaitForVideo(1.0f);
+        IEnumerator coKeep = FadeInAfterDelay(keep, 1.0f, 1.5f);
+        IEnumerator coIt = FadeInAfterDelay(it, 2.5f, 1.5f);
+        IEnumerator coAflame = FadeInAfterDelay(aflame, 4.0f, 3.0f);
+        IEnumerator coPress = FadeInPress(6.0f);
+        IEnumerator coVideo = WaitForVideo(4.0f);
         StartCoroutine(coKeep);
         StartCoroutine(coIt);
         StartCoroutine(coAflame);
@@ -72,10 +72,21 @@ public class MenuManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.anyKeyDown)
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            SceneManager.LoadScene("MainScene");
+            Application.Quit();
         }
+        else if (Input.anyKeyDown)
+        {
+            StartCoroutine(LoadScene());
+            SoundManagerScript.instance.PlayOneShotSound(SoundManagerScript.AudioClips.MainMenu);
+        }
+    }
+
+    IEnumerator LoadScene()
+    {
+        yield return new WaitForSeconds(1.0f);
+        SceneManager.LoadScene("MainScene");
     }
 
 

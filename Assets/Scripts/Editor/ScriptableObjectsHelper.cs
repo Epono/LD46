@@ -12,7 +12,7 @@ public class ScriptableObjectsHelper : EditorWindow
         EditorWindow.GetWindow(typeof(ScriptableObjectsHelper));
     }
 
-    private void OnEnable()
+    private void Awake()
     {
         var variablesArray = Resources.LoadAll<FloatVariable>("ScriptableObjects");
         List<FloatVariable> variables = variablesArray.ToList();
@@ -58,7 +58,7 @@ public class ScriptableObjectsHelper : EditorWindow
         GUILayout.Label("Player", EditorStyles.boldLabel);
         foreach (FloatVariable variable in player)
         {
-            variable.Value = EditorGUILayout.Slider(variable.name.Replace("Player", ""), variable.Value, 0, 100);
+            variable.Value = EditorGUILayout.Slider(variable.name.Replace("Player", ""), variable.Value, 0, 200);
         }
         EditorGUILayout.Space();
         EditorGUILayout.Space();
@@ -67,14 +67,14 @@ public class ScriptableObjectsHelper : EditorWindow
         GUILayout.Label("Agent Simple", EditorStyles.boldLabel);
         foreach (FloatVariable variable in agentSimple)
         {
-            variable.Value = EditorGUILayout.Slider(variable.name.Replace("AgentSimple", ""), variable.Value, 0, 100);
+            variable.Value = EditorGUILayout.Slider(variable.name.Replace("AgentSimple", ""), variable.Value, 0, 200);
         }
         EditorGUILayout.Space();
 
         GUILayout.Label("Agent Double", EditorStyles.boldLabel);
         foreach (FloatVariable variable in agentDouble)
         {
-            variable.Value = EditorGUILayout.Slider(variable.name.Replace("AgentDouble", ""), variable.Value, 0, 100);
+            variable.Value = EditorGUILayout.Slider(variable.name.Replace("AgentDouble", ""), variable.Value, 0, 200);
         }
         EditorGUILayout.Space();
         EditorGUILayout.Space();
@@ -83,14 +83,14 @@ public class ScriptableObjectsHelper : EditorWindow
         GUILayout.Label("Tower Simple", EditorStyles.boldLabel);
         foreach (FloatVariable variable in towerSimple)
         {
-            variable.Value = EditorGUILayout.Slider(variable.name.Replace("TowerSimple", ""), variable.Value, 0, 100);
+            variable.Value = EditorGUILayout.Slider(variable.name.Replace("TowerSimple", ""), variable.Value, 0, 200);
         }
         EditorGUILayout.Space();
 
         GUILayout.Label("Tower Double", EditorStyles.boldLabel);
         foreach (FloatVariable variable in towerDouble)
         {
-            variable.Value = EditorGUILayout.Slider(variable.name.Replace("TowerDouble", ""), variable.Value, 0, 100);
+            variable.Value = EditorGUILayout.Slider(variable.name.Replace("TowerDouble", ""), variable.Value, 0, 200);
         }
         EditorGUILayout.Space();
         EditorGUILayout.Space();
@@ -99,10 +99,7 @@ public class ScriptableObjectsHelper : EditorWindow
         GUILayout.Label("Others", EditorStyles.boldLabel);
         foreach (FloatVariable variable in others)
         {
-            variable.Value = EditorGUILayout.Slider(variable.name, variable.Value, 0, 100
-                );
+            variable.Value = EditorGUILayout.Slider(variable.name, variable.Value, 0, 200);
         }
-
-
     }
 }

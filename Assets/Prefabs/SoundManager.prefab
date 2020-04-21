@@ -60,10 +60,21 @@ MonoBehaviour:
   - {fileID: 1773096895748426738}
   - {fileID: 3089969884557420111}
   sfxSource: {fileID: 2705532512379683120}
-  gameLose: {fileID: 0}
-  gameWin: {fileID: 0}
-  menuSelect: {fileID: 0}
-  menuStart: {fileID: 0}
+  mainMenu: {fileID: 8300000, guid: 452a11e3a9c7c374f9562c1d67d85d1d, type: 3}
+  tryAgain: {fileID: 8300000, guid: b898ed56513b96c48a08b596be5e7ef0, type: 3}
+  exit: {fileID: 8300000, guid: bc001fa927454e64abaf6011583c195f, type: 3}
+  gameLose: {fileID: 8300000, guid: 68bedee380e657241b7cf510b3afcd5a, type: 3}
+  gameWin: {fileID: 8300000, guid: 7cabdcbdb5d0e6645bd8fcb6734be4d0, type: 3}
+  towerInvalidLocation: {fileID: 8300000, guid: a69d8ec683f67cc448a619b4aa6f7035,
+    type: 3}
+  towerNotEnoughMoney: {fileID: 8300000, guid: 2b19e78ba6fb7a047994d9f323c92912, type: 3}
+  towerPlaced: {fileID: 8300000, guid: ac1234ed7296b094f9879e54653ee101, type: 3}
+  towerSimpleShoot: {fileID: 8300000, guid: ba116290cc696f64aa5c4ca76d07bde3, type: 3}
+  towerDoubleShoot: {fileID: 8300000, guid: 574b7c56db9ee5b48b79240c4179b459, type: 3}
+  agentSimpleDead: {fileID: 8300000, guid: 7c8b448a8c2959a42883d9c88226187e, type: 3}
+  agentDoubleDead: {fileID: 8300000, guid: 8f84db0406c53b04caff753870497862, type: 3}
+  goalHurt: {fileID: 8300000, guid: 148f4ab9b152711449e08f85cea98ee9, type: 3}
+  baseVolume: 0.1
 --- !u!82 &2705532512379683120
 AudioSource:
   m_ObjectHideFlags: 0
@@ -76,7 +87,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 0
   Mute: 0
